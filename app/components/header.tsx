@@ -61,6 +61,18 @@ export function Header() {
       href: '/news',
       icon: Newspaper,
       description: 'Latest cryptocurrency news and updates'
+    },
+    {
+      title: 'Guides',
+      href: '/guides',
+      icon: Newspaper,
+      description: 'Cryptocurrency tutorials and guides'
+    },
+    {
+      title: 'Glossary',
+      href: '/glossary',
+      icon: Newspaper,
+      description: 'Crypto terms and definitions'
     }
   ];
 

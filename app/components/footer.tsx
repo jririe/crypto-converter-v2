@@ -12,15 +12,15 @@ export function Footer() {
       links: [
         { name: 'Crypto Converter', href: '/', icon: Calculator },
         { name: 'Market Data', href: '/markets', icon: TrendingUp },
-        { name: 'Price Charts', href: '/charts', icon: TrendingUp }
+        { name: 'Compare Exchanges', href: '/compare-exchanges', icon: TrendingUp }
       ]
     },
     {
       title: 'Resources',
       links: [
         { name: 'Crypto News', href: '/news', icon: Newspaper },
-        { name: 'Educational Guides', href: '/learn', icon: Newspaper },
-        { name: 'Market Analysis', href: '/analysis', icon: TrendingUp }
+        { name: 'Crypto Guides', href: '/guides', icon: Newspaper },
+        { name: 'Crypto Glossary', href: '/glossary', icon: Newspaper }
       ]
     },
     {

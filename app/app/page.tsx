@@ -10,6 +10,10 @@ import { CryptoNews } from '@/components/crypto-news';
 import { EnhancedAdSpace } from '@/components/enhanced-ad-spaces';
 import { RecommendedServices } from '@/components/recommended-services';
 import { NewsletterSignup } from '@/components/newsletter-signup';
+import { Breadcrumbs } from '@/components/seo/breadcrumbs';
+import { FAQSection } from '@/components/seo/faq-section';
+import { StructuredData } from '@/components/seo/structured-data';
+import { FAQ_DATA } from '@/lib/seo-utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -27,8 +31,8 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'CryptoConverter - Real-Time Cryptocurrency Price Calculator & Converter',
-  description: 'Convert cryptocurrencies and fiat currencies with real-time prices. Track Bitcoin, Ethereum, and 1000+ digital assets with live market data, news, and analysis.',
+  title: 'Cryptocurrency Converter - Real-Time Bitcoin & Crypto Price Calculator',
+  description: 'Free cryptocurrency converter with real-time prices for Bitcoin, Ethereum & 1000+ digital assets. Instant crypto calculator with live exchange rates, market data & news. Convert BTC to USD instantly.',
   keywords: [
     'cryptocurrency converter',
     'crypto price calculator', 
@@ -36,7 +40,15 @@ export const metadata: Metadata = {
     'ethereum price',
     'crypto exchange rates',
     'digital currency converter',
-    'real time crypto prices'
+    'real time crypto prices',
+    'bitcoin to usd converter',
+    'ethereum to usd converter',
+    'crypto calculator',
+    'how to convert bitcoin to dollars',
+    'best cryptocurrency price tracker',
+    'real time crypto conversion calculator',
+    'bitcoin calculator with fees',
+    'crypto portfolio tracker free'
   ],
   openGraph: {
     title: 'CryptoConverter - Real-Time Cryptocurrency Price Calculator',
@@ -105,29 +117,45 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background">
       <Header />
 
+      {/* Breadcrumbs */}
+      <div className="container mx-auto max-w-7xl px-4 py-4">
+        <Breadcrumbs 
+          items={[
+            { name: 'Cryptocurrency Converter', href: '/', current: true }
+          ]} 
+        />
+      </div>
+
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950">
+      <section className="relative py-16 px-4 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center space-y-6 mb-12">
             <div className="flex justify-center">
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
                 <Star className="w-3 h-3 mr-1" />
-                Trusted by 10,000+ crypto enthusiasts
+                Trusted by 10,000+ crypto enthusiasts worldwide
               </Badge>
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Convert Crypto
-              <span className="block text-primary">Instantly & Accurately</span>
+              Free Cryptocurrency Converter
+              <span className="block text-primary">Real-Time Bitcoin & Crypto Calculator</span>
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              The most comprehensive cryptocurrency converter with real-time prices, market data, and news. 
-              Track Bitcoin, Ethereum, and 1000+ digital assets with professional-grade tools.
+              Convert Bitcoin, Ethereum, and 1000+ cryptocurrencies instantly with live exchange rates. 
+              The most accurate crypto price calculator with real-time market data, news, and professional trading tools.
             </p>
 
             <div className="flex flex-wrap justify-center gap-3">
-              {['Real-time Prices', 'All Currencies', 'Latest News', 'Market Analytics'].map((feature) => (
+              {[
+                'Free & Instant Conversion', 
+                '1000+ Cryptocurrencies', 
+                'Real-Time Data', 
+                'Market Analytics',
+                'Live News Updates',
+                'No Registration Required'
+              ].map((feature) => (
                 <Badge key={feature} variant="secondary" className="text-sm px-3 py-1">
                   {feature}
                 </Badge>
@@ -193,10 +221,11 @@ export default async function HomePage() {
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Why Choose CryptoConverter?
+              Why Choose Our Cryptocurrency Converter?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Built for beginners and professionals alike, with enterprise-grade features and consumer-friendly design.
+              The most trusted Bitcoin and crypto calculator with advanced features for beginners and professional traders. 
+              Free, fast, and accurate conversions with real-time data.
             </p>
           </div>
 
@@ -216,15 +245,102 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* SEO-Rich Content Section */}
+      <section className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold">
+                How to Convert Bitcoin to USD and Other Cryptocurrencies
+              </h2>
+              <div className="prose prose-lg max-w-none text-muted-foreground">
+                <p>
+                  Converting cryptocurrencies has never been easier with our free crypto calculator. 
+                  Whether you want to convert Bitcoin to USD, Ethereum to EUR, or any other digital asset, 
+                  our real-time converter provides instant results with live market prices.
+                </p>
+                <h3 className="text-xl font-semibold text-foreground mt-6 mb-3">
+                  Step-by-Step Conversion Process:
+                </h3>
+                <ol className="list-decimal list-inside space-y-2">
+                  <li>Select your source cryptocurrency (e.g., Bitcoin, Ethereum)</li>
+                  <li>Choose your target currency (USD, EUR, or another crypto)</li>
+                  <li>Enter the amount you want to convert</li>
+                  <li>Get instant results with current exchange rates</li>
+                  <li>View historical price data and market trends</li>
+                </ol>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold">
+                Real-Time Cryptocurrency Price Data
+              </h2>
+              <div className="prose prose-lg max-w-none text-muted-foreground">
+                <p>
+                  Our cryptocurrency converter uses live data from CoinGecko API, updated every 30 seconds 
+                  to ensure you get the most accurate conversion rates. Track market movements, analyze price 
+                  trends, and make informed decisions with comprehensive market data.
+                </p>
+                <h3 className="text-xl font-semibold text-foreground mt-6 mb-3">
+                  Key Features Include:
+                </h3>
+                <ul className="list-disc list-inside space-y-2">
+                  <li>Live prices for 1000+ cryptocurrencies</li>
+                  <li>Support for 30+ major fiat currencies</li>
+                  <li>Historical price charts and analysis</li>
+                  <li>Market cap and trading volume data</li>
+                  <li>Price change indicators (24h, 7d, 30d)</li>
+                  <li>Mobile-responsive design for all devices</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Frequently Asked Questions About Cryptocurrency Conversion
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Get answers to common questions about converting Bitcoin, Ethereum, and other cryptocurrencies.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <FAQSection 
+              title="General Questions"
+              faqs={FAQ_DATA.general}
+            />
+            <FAQSection 
+              title="Converter Questions" 
+              faqs={FAQ_DATA.converter}
+            />
+          </div>
+          
+          <div className="mt-8">
+            <FAQSection 
+              title="Technical Questions"
+              faqs={FAQ_DATA.technical}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Recommended Services Section */}
       <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Recommended Crypto Services
+              Best Cryptocurrency Exchanges & Trading Platforms 2024
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Trusted platforms and tools recommended by our experts to enhance your crypto journey.
+              Compare top crypto exchanges, wallets, and trading platforms recommended by experts. 
+              Find the best rates for Bitcoin, Ethereum, and altcoin trading.
             </p>
           </div>
           
@@ -273,28 +389,69 @@ export default async function HomePage() {
 
       <Footer />
 
-      {/* Schema.org structured data for SEO */}
+      {/* Enhanced Schema.org structured data for SEO */}
+      <StructuredData type="faqPage" data={[...FAQ_DATA.general, ...FAQ_DATA.converter, ...FAQ_DATA.technical]} />
+      
+      {/* WebPage Schema with enhanced data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "CryptoConverter",
-            "description": "Real-time cryptocurrency price calculator and converter",
+            "@type": "WebPage",
+            "name": "Free Cryptocurrency Converter - Real-Time Bitcoin & Crypto Calculator",
+            "description": "Convert Bitcoin, Ethereum, and 1000+ cryptocurrencies instantly with live exchange rates. Free crypto calculator with real-time market data, news, and professional trading tools.",
             "url": "https://cryptoconverter.com",
-            "applicationCategory": "FinanceApplication",
-            "operatingSystem": "Web Browser",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
+            "mainEntity": {
+              "@type": "SoftwareApplication",
+              "name": "CryptoConverter",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Web Browser",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "1250",
+                "bestRating": "5"
+              }
             },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.8",
-              "ratingCount": "1250"
-            }
+            "breadcrumb": {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://cryptoconverter.com"
+                },
+                {
+                  "@type": "ListItem", 
+                  "position": 2,
+                  "name": "Cryptocurrency Converter",
+                  "item": "https://cryptoconverter.com"
+                }
+              ]
+            },
+            "keywords": [
+              "cryptocurrency converter",
+              "bitcoin to usd converter",
+              "crypto price calculator",
+              "ethereum converter",
+              "real time crypto prices",
+              "bitcoin calculator",
+              "crypto exchange rates"
+            ],
+            "author": {
+              "@type": "Organization",
+              "name": "CryptoConverter"
+            },
+            "datePublished": "2024-01-01",
+            "dateModified": new Date().toISOString().split('T')[0]
           })
         }}
       />
