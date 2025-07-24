@@ -7,7 +7,9 @@ import { CryptoConverter } from '@/components/crypto-converter';
 import { MarketOverview } from '@/components/market-overview';
 import { TrendingCryptos } from '@/components/trending-cryptos';
 import { CryptoNews } from '@/components/crypto-news';
-import { AdSpace, GoogleAdSense } from '@/components/ad-spaces';
+import { EnhancedAdSpace } from '@/components/enhanced-ad-spaces';
+import { RecommendedServices } from '@/components/recommended-services';
+import { NewsletterSignup } from '@/components/newsletter-signup';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -133,9 +135,9 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Ad Space - Header */}
+          {/* Enhanced Ad Space - Header */}
           <div className="mb-8">
-            <AdSpace position="header" size="small" />
+            <EnhancedAdSpace position="header" size="small" pageContext="homepage" />
           </div>
 
           {/* Main Converter */}
@@ -166,9 +168,11 @@ export default async function HomePage() {
               <MarketOverview initialData={marketData} />
             </div>
             <div className="space-y-6">
-              {/* Ad Space - Sidebar */}
-              <AdSpace position="sidebar" size="medium" />
-              <GoogleAdSense slot="1234567890" />
+              {/* Enhanced Ad Space - Sidebar */}
+              <EnhancedAdSpace position="sidebar" size="medium" pageContext="homepage" />
+              
+              {/* Newsletter Signup */}
+              <NewsletterSignup variant="card" source="homepage-sidebar" />
             </div>
           </div>
         </div>
@@ -212,32 +216,56 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Ad Space - Content */}
-      <section className="py-8 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <AdSpace position="content" size="large" />
+      {/* Recommended Services Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Recommended Crypto Services
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Trusted platforms and tools recommended by our experts to enhance your crypto journey.
+            </p>
+          </div>
+          
+          <RecommendedServices limit={6} variant="grid" />
+          
+          {/* Enhanced Ad Space - Content */}
+          <div className="mt-12">
+            <EnhancedAdSpace position="content" size="large" pageContext="homepage" />
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section with Newsletter */}
       <section className="py-20 px-4 bg-primary text-primary-foreground">
-        <div className="container mx-auto max-w-4xl text-center">
-          <div className="space-y-6">
-            <Bell className="w-12 h-12 mx-auto opacity-80" />
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Never Miss a Market Move
-            </h2>
-            <p className="text-xl opacity-90 max-w-2xl mx-auto">
-              Get real-time price alerts, market analysis, and breaking news delivered straight to your inbox.
-            </p>
-            <div className="space-y-4">
-              <Button size="lg" variant="secondary" className="text-lg px-8">
-                Set Price Alerts
-                <Bell className="w-5 h-5 ml-2" />
-              </Button>
-              <p className="text-sm opacity-75">
-                Join 10,000+ crypto enthusiasts getting daily insights
+        <div className="container mx-auto max-w-4xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <Bell className="w-12 h-12 mx-auto lg:mx-0 opacity-80 mb-6" />
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Never Miss a Market Move
+              </h2>
+              <p className="text-xl opacity-90 mb-6">
+                Get real-time price alerts, market analysis, and breaking news delivered straight to your inbox.
               </p>
+              <div className="space-y-4">
+                <Button size="lg" variant="secondary" className="text-lg px-8">
+                  Set Price Alerts
+                  <Bell className="w-5 h-5 ml-2" />
+                </Button>
+                <p className="text-sm opacity-75">
+                  Join 10,000+ crypto enthusiasts getting daily insights
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-background/10 rounded-lg p-6 backdrop-blur">
+              <NewsletterSignup 
+                variant="inline" 
+                source="homepage-cta"
+                className="bg-transparent border-primary-foreground/20"
+              />
             </div>
           </div>
         </div>

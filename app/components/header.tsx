@@ -51,6 +51,12 @@ export function Header() {
       description: 'Live crypto market data and prices'
     },
     {
+      title: 'Compare',
+      href: '/compare-exchanges',
+      icon: TrendingUp,
+      description: 'Compare top crypto exchanges'
+    },
+    {
       title: 'News',
       href: '/news',
       icon: Newspaper,

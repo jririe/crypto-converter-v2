@@ -223,3 +223,210 @@ model ApiUsage {
     @@index([timestamp])
     @@index([endpoint])
 }
+
+// Monetization Models
+model AffiliatePartner {
+    id              String   @id @default(cuid())
+    name            String
+    slug            String   @unique
+    description     String?
+    logoUrl         String?
+    websiteUrl      String
+    category        String   // 'exchange', 'wallet', 'educational', 'trading', 'defi'
+    commission      Float?   // Percentage or fixed amount
+    cookieDuration  Int      @default(30) // Days
+    isActive        Boolean  @default(true)
+    priority        Int      @default(0) // Higher number = higher priority
+    regions         String[] // Supported regions
+    tags            String[] // For targeting
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    // Relations
+    links           AffiliateLink[]
+    clicks          AffiliateClick[]
+    conversions     AffiliateConversion[]
+
+    @@map("affiliate_partners")
+    @@index([category, isActive])
+    @@index([priority])
+}
+
+model AffiliateLink {
+    id              String   @id @default(cuid())
+    partnerId       String
+    name            String
+    description     String?
+    targetUrl       String   // The actual affiliate URL
+    linkType        String   // 'cta', 'banner', 'text', 'comparison'
+    placement       String   // 'header', 'sidebar', 'content', 'footer', 'popup'
+    pageContext     String?  // Which pages this link appears on
+    utmSource       String?
+    utmMedium       String?
+    utmCampaign     String?
+    utmContent      String?
+    isActive        Boolean  @default(true)
+    startDate       DateTime?
+    endDate         DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    // Relations
+    partner         AffiliatePartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+    clicks          AffiliateClick[]
+
+    @@map("affiliate_links")
+    @@index([partnerId, isActive])
+    @@index([placement, pageContext])
+    @@unique([partnerId, placement, linkType])
+}
+
+model AffiliateClick {
+    id              String   @id @default(cuid())
+    linkId          String
+    partnerId       String
+    sessionId       String?
+    ipAddress       String?
+    userAgent       String?
+    referrer        String?
+    country         String?
+    device          String?  // 'desktop', 'mobile', 'tablet'
+    timestamp       DateTime @default(now())
+
+    // Relations
+    link            AffiliateLink @relation(fields: [linkId], references: [id], onDelete: Cascade)
+    partner         AffiliatePartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+    @@map("affiliate_clicks")
+    @@index([linkId, timestamp])
+    @@index([partnerId, timestamp])
+    @@index([sessionId])
+}
+
+model AffiliateConversion {
+    id              String   @id @default(cuid())
+    partnerId       String
+    sessionId       String?
+    conversionValue Float?   // Revenue generated
+    commission      Float?   // Commission earned
+    currency        String   @default("USD")
+    conversionType  String   // 'signup', 'purchase', 'deposit', 'trade'
+    referenceId     String?  // Partner's tracking ID
+    ipAddress       String?
+    country         String?
+    timestamp       DateTime @default(now())
+    confirmedAt     DateTime?
+    paidAt          DateTime?
+    status          String   @default("pending") // 'pending', 'confirmed', 'paid', 'rejected'
+
+    // Relations
+    partner         AffiliatePartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+    @@map("affiliate_conversions")
+    @@index([partnerId, status])
+    @@index([timestamp])
+}
+
+model AdSpace {
+    id              String   @id @default(cuid())
+    name            String
+    slug            String   @unique
+    description     String?
+    placement       String   // 'header', 'sidebar', 'content', 'footer', 'popup', 'native'
+    size            String   // 'small', 'medium', 'large', 'responsive'
+    pageTypes       String[] // Which page types this ad appears on
+    adType          String   // 'adsense', 'affiliate', 'banner', 'native'
+    content         Json?    // Ad content configuration
+    isActive        Boolean  @default(true)
+    priority        Int      @default(0)
+    startDate       DateTime?
+    endDate         DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    // Relations
+    impressions     AdImpression[]
+    clicks          AdClick[]
+
+    @@map("ad_spaces")
+    @@index([placement, isActive])
+    @@index([pageTypes])
+}
+
+model AdImpression {
+    id              String   @id @default(cuid())
+    adSpaceId       String
+    sessionId       String?
+    ipAddress       String?
+    userAgent       String?
+    country         String?
+    device          String?
+    pageUrl         String?
+    referrer        String?
+    timestamp       DateTime @default(now())
+
+    // Relations
+    adSpace         AdSpace @relation(fields: [adSpaceId], references: [id], onDelete: Cascade)
+
+    @@map("ad_impressions")
+    @@index([adSpaceId, timestamp])
+    @@index([sessionId])
+}
+
+model AdClick {
+    id              String   @id @default(cuid())
+    adSpaceId       String
+    sessionId       String?
+    ipAddress       String?
+    userAgent       String?
+    country         String?
+    device          String?
+    pageUrl         String?
+    referrer        String?
+    timestamp       DateTime @default(now())
+
+    // Relations
+    adSpace         AdSpace @relation(fields: [adSpaceId], references: [id], onDelete: Cascade)
+
+    @@map("ad_clicks")
+    @@index([adSpaceId, timestamp])
+    @@index([sessionId])
+}
+
+model Newsletter {
+    id              String   @id @default(cuid())
+    email           String   @unique
+    name            String?
+    subscribed      Boolean  @default(true)
+    preferences     Json?    // Email preferences, frequency, etc.
+    source          String?  // How they subscribed
+    ipAddress       String?
+    country         String?
+    subscribedAt    DateTime @default(now())
+    unsubscribedAt  DateTime?
+    lastEmailSent   DateTime?
+
+    @@map("newsletter")
+    @@index([subscribed])
+    @@index([subscribedAt])
+}
+
+model ContactSubmission {
+    id              String   @id @default(cuid())
+    name            String
+    email           String
+    subject         String?
+    message         String
+    formType        String   @default("contact") // 'contact', 'partnership', 'support'
+    status          String   @default("new") // 'new', 'read', 'replied', 'closed'
+    ipAddress       String?
+    userAgent       String?
+    source          String?  // Which page/form they came from
+    priority        String   @default("normal") // 'low', 'normal', 'high', 'urgent'
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    @@map("contact_submissions")
+    @@index([status, priority])
+    @@index([createdAt])
+}

@@ -114,3 +114,119 @@ export interface ExchangeRatesResponse {
   base: string;
   date: string;
 }
+
+// Monetization Types
+export interface AffiliatePartner {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  logoUrl?: string;
+  websiteUrl: string;
+  category: 'exchange' | 'wallet' | 'educational' | 'trading' | 'defi';
+  commission?: number;
+  cookieDuration: number;
+  isActive: boolean;
+  priority: number;
+  regions: string[];
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AffiliateLink {
+  id: string;
+  partnerId: string;
+  name: string;
+  description?: string;
+  targetUrl: string;
+  linkType: 'cta' | 'banner' | 'text' | 'comparison';
+  placement: 'header' | 'sidebar' | 'content' | 'footer' | 'popup';
+  pageContext?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmContent?: string;
+  isActive: boolean;
+  startDate?: Date;
+  endDate?: Date;
+  partner?: AffiliatePartner;
+}
+
+export interface AffiliateClick {
+  id: string;
+  linkId: string;
+  partnerId: string;
+  sessionId?: string;
+  ipAddress?: string;
+  userAgent?: string;
+  referrer?: string;
+  country?: string;
+  device?: string;
+  timestamp: Date;
+}
+
+export interface AffiliateConversion {
+  id: string;
+  partnerId: string;
+  sessionId?: string;
+  conversionValue?: number;
+  commission?: number;
+  currency: string;
+  conversionType: 'signup' | 'purchase' | 'deposit' | 'trade';
+  referenceId?: string;
+  status: 'pending' | 'confirmed' | 'paid' | 'rejected';
+  timestamp: Date;
+  partner?: AffiliatePartner;
+}
+
+export interface AdSpaceConfig {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  placement: 'header' | 'sidebar' | 'content' | 'footer' | 'popup' | 'native';
+  size: 'small' | 'medium' | 'large' | 'responsive';
+  pageTypes: string[];
+  adType: 'adsense' | 'affiliate' | 'banner' | 'native';
+  content?: any;
+  isActive: boolean;
+  priority: number;
+}
+
+export interface MonetizationMetrics {
+  totalClicks: number;
+  totalConversions: number;
+  totalRevenue: number;
+  conversionRate: number;
+  topPartners: Array<{
+    partner: AffiliatePartner;
+    clicks: number;
+    conversions: number;
+    revenue: number;
+  }>;
+  revenueByCategory: Record<string, number>;
+  clicksByDevice: Record<string, number>;
+}
+
+export interface NewsletterSubscription {
+  id: string;
+  email: string;
+  name?: string;
+  subscribed: boolean;
+  preferences?: any;
+  source?: string;
+  subscribedAt: Date;
+}
+
+export interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  subject?: string;
+  message: string;
+  formType: 'contact' | 'partnership' | 'support';
+  status: 'new' | 'read' | 'replied' | 'closed';
+  priority: 'low' | 'normal' | 'high' | 'urgent';
+  createdAt: Date;
+}
