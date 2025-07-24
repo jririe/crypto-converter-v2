@@ -1,0 +1,225 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/crypto_converter_website/app/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Cryptocurrency {
+    id              String   @id @default(cuid())
+    coinId          String   @unique
+    name            String
+    symbol          String
+    slug            String   @unique
+    image           String?
+    currentPrice    Float?
+    marketCap       BigInt?
+    marketCapRank   Int?
+    totalVolume     BigInt?
+    high24h         Float?
+    low24h          Float?
+    priceChange24h  Float?
+    priceChangePercentage24h Float?
+    marketCapChange24h BigInt?
+    marketCapChangePercentage24h Float?
+    circulatingSupply BigInt?
+    totalSupply     BigInt?
+    maxSupply       BigInt?
+    ath             Float?
+    athChangePercentage Float?
+    athDate         DateTime?
+    atl             Float?
+    atlChangePercentage Float?
+    atlDate         DateTime?
+    lastUpdated     DateTime @default(now())
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    // Relations
+    priceHistory    PriceHistory[]
+    conversionsFrom Conversion[] @relation("FromCrypto")
+    conversionsTo   Conversion[] @relation("ToCrypto")
+    watchlistItems  WatchlistItem[]
+
+    @@map("cryptocurrencies")
+}
+
+model FiatCurrency {
+    id              String   @id @default(cuid())
+    code            String   @unique
+    name            String
+    symbol          String
+    flag            String?
+    exchangeRate    Float?   // Rate against USD
+    lastUpdated     DateTime @default(now())
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    // Relations
+    conversionsFrom Conversion[] @relation("FromFiat")
+    conversionsTo   Conversion[] @relation("ToFiat")
+
+    @@map("fiat_currencies")
+}
+
+model PriceHistory {
+    id              String   @id @default(cuid())
+    cryptoId        String
+    timestamp       DateTime
+    price           Float
+    marketCap       BigInt?
+    volume          BigInt?
+    createdAt       DateTime @default(now())
+
+    // Relations
+    cryptocurrency  Cryptocurrency @relation(fields: [cryptoId], references: [id], onDelete: Cascade)
+
+    @@map("price_history")
+    @@index([cryptoId, timestamp])
+}
+
+model Conversion {
+    id              String   @id @default(cuid())
+    fromAmount      Float
+    toAmount        Float
+    fromType        String   // 'crypto' or 'fiat'
+    toType          String   // 'crypto' or 'fiat'
+    fromCryptoId    String?
+    toCryptoId      String?
+    fromFiatId      String?
+    toFiatId        String?
+    exchangeRate    Float
+    timestamp       DateTime @default(now())
+    ipAddress       String?
+    userAgent       String?
+
+    // Relations
+    fromCrypto      Cryptocurrency? @relation("FromCrypto", fields: [fromCryptoId], references: [id])
+    toCrypto        Cryptocurrency? @relation("ToCrypto", fields: [toCryptoId], references: [id])
+    fromFiat        FiatCurrency? @relation("FromFiat", fields: [fromFiatId], references: [id])
+    toFiat          FiatCurrency? @relation("ToFiat", fields: [toFiatId], references: [id])
+
+    @@map("conversions")
+    @@index([timestamp])
+}
+
+model NewsArticle {
+    id              String   @id @default(cuid())
+    title           String
+    description     String?
+    content         String?
+    url             String   @unique
+    imageUrl        String?
+    source          String
+    author          String?
+    publishedAt     DateTime
+    category        String?
+    tags            String[]
+    sentiment       String?  // 'positive', 'negative', 'neutral'
+    viewCount       Int      @default(0)
+    isActive        Boolean  @default(true)
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    @@map("news_articles")
+    @@index([publishedAt])
+    @@index([source])
+    @@index([category])
+}
+
+model User {
+    id              String   @id @default(cuid())
+    email           String   @unique
+    name            String?
+    avatar          String?
+    preferences     Json?    // User preferences for currencies, news categories, etc.
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    // Relations
+    watchlists      Watchlist[]
+    alerts          Alert[]
+
+    @@map("users")
+}
+
+model Watchlist {
+    id              String   @id @default(cuid())
+    userId          String
+    name            String
+    isDefault       Boolean  @default(false)
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    // Relations
+    user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    items           WatchlistItem[]
+
+    @@map("watchlists")
+}
+
+model WatchlistItem {
+    id              String   @id @default(cuid())
+    watchlistId     String
+    cryptoId        String
+    addedAt         DateTime @default(now())
+
+    // Relations
+    watchlist       Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+    cryptocurrency  Cryptocurrency @relation(fields: [cryptoId], references: [id], onDelete: Cascade)
+
+    @@map("watchlist_items")
+    @@unique([watchlistId, cryptoId])
+}
+
+model Alert {
+    id              String   @id @default(cuid())
+    userId          String
+    cryptoId        String
+    alertType       String   // 'price_above', 'price_below', 'percent_change'
+    targetValue     Float
+    currentValue    Float?
+    isActive        Boolean  @default(true)
+    isTriggered     Boolean  @default(false)
+    triggeredAt     DateTime?
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+
+    // Relations
+    user            User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("alerts")
+    @@index([userId, isActive])
+}
+
+model ExchangeRate {
+    id              String   @id @default(cuid())
+    baseCurrency    String
+    targetCurrency  String
+    rate            Float
+    source          String   // 'api_source'
+    lastUpdated     DateTime @default(now())
+
+    @@map("exchange_rates")
+    @@unique([baseCurrency, targetCurrency])
+    @@index([lastUpdated])
+}
+
+model ApiUsage {
+    id              String   @id @default(cuid())
+    endpoint        String
+    method          String
+    ipAddress       String?
+    userAgent       String?
+    responseTime    Int?     // in milliseconds
+    statusCode      Int
+    timestamp       DateTime @default(now())
+
+    @@map("api_usage")
+    @@index([timestamp])
+    @@index([endpoint])
+}
