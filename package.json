@@ -1,0 +1,14 @@
+{
+  "name": "crypto-converter-website-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd app && npm run dev",
+    "build": "cd app && npm run build",
+    "start": "cd app && npm run start",
+    "install-deps": "cd app && npm install"
+  },
+  "workspaces": [
+    "app"
+  ]
+}
