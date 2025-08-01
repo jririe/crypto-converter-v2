@@ -1,17 +1,6 @@
 {
-  "version": 2,
-  "framework": "nextjs",
-  "buildCommand": "cd app && npm install && npm run build",
+  "buildCommand": "cd app && npm run build",
   "outputDirectory": "app/.next",
   "installCommand": "cd app && npm install",
-  "devCommand": "cd app && npm run dev",
-  "regions": ["iad1"],
-  "functions": {
-    "app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "devCommand": "cd app && npm run dev"
 }
