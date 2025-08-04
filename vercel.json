@@ -1,6 +1,37 @@
 {
-  "buildCommand": "cd app && npm run build",
-  "outputDirectory": "app/.next",
+  "buildCommand": "cd app && npm install && npx prisma generate && npm run build",
+  "outputDirectory": "app/.build",
   "installCommand": "cd app && npm install",
-  "devCommand": "cd app && npm run dev"
+  "devCommand": "cd app && npm run dev",
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/((?!api|_next|_static|favicon.ico).*)",
+      "destination": "/"
+    }
+  ],
+  "functions": {
+    "app/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ]
 }
