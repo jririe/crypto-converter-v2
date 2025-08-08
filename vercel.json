@@ -1,20 +1,10 @@
 {
-  "buildCommand": "cd app && npm install && npx prisma generate && npm run build",
-  "outputDirectory": "app/.build",
-  "installCommand": "cd app && npm install",
-  "devCommand": "cd app && npm run dev",
-  "framework": "nextjs",
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
-  "functions": {
-    "app/api/**/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
